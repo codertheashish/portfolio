@@ -262,7 +262,7 @@ section {
 .section-tag {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 2rem;
+  font-size: 5rem;
   color: var(--accent);
   letter-spacing: 0.12em;
   text-transform: uppercase;

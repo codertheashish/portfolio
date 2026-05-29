@@ -654,3 +654,14 @@ footer {
   transform:translateY(-2px);
   color:var(--text);
 }
+.cert-info a{
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.cert-info a:hover{
+  color: #60a5fa;
+  text-decoration: underline;
+}

@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-/* ── Added: typing role + speak feature (kept separate so style.css doesn't need editing) ── */
+/* ── typing role ── */
 .hero-role{
   font-family:'DM Mono',monospace;
   font-style:italic;
@@ -24,52 +24,6 @@
   margin-left:2px;
 }
 @keyframes role-blink{50%{opacity:0}}
-
-.speak-btn{
-  position:fixed;bottom:2rem;right:2rem;z-index:200;
-  width:56px;height:56px;border-radius:50%;
-  background:var(--accent, #4f9cf9);
-  border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 20px rgba(0,0,0,0.35);
-  transition:transform 0.2s,box-shadow 0.2s;
-}
-.speak-btn:hover{transform:scale(1.08)}
-.speak-btn svg{width:24px;height:24px;fill:#fff}
-.speak-btn.is-speaking{animation:speak-pulse 1.2s ease-in-out infinite}
-@keyframes speak-pulse{
-  0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.35)}
-  50%{box-shadow:0 4px 26px rgba(0,0,0,0.45),0 0 0 8px rgba(79,156,249,0.15)}
-}
-
-.speech-wave{
-  position:fixed;bottom:6rem;right:1rem;z-index:200;
-  background:#10131c;
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:12px;
-  padding:1rem 1.25rem;
-  max-width:280px;
-  font-size:0.85rem;
-  color:#e7e9ee;
-  line-height:1.6;
-  opacity:0;transform:translateY(10px);
-  transition:all 0.3s;
-  pointer-events:none;
-  box-shadow:0 8px 24px rgba(0,0,0,0.4);
-}
-.speech-wave.visible{opacity:1;transform:translateY(0)}
-.speech-label{
-  display:block;
-  color:var(--accent, #4f9cf9);
-  font-size:0.75rem;
-  font-family:'DM Mono',monospace;
-  margin-bottom:0.4rem;
-}
-
-@media(max-width:768px){
-  .speak-btn{width:48px;height:48px;bottom:1.25rem;right:1.25rem}
-  .speech-wave{right:0.75rem;max-width:220px}
-}
 </style>
 </head>
 <body>
@@ -150,17 +104,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Speech Popup -->
-  <div class="speech-wave" id="speech-popup">
-    <strong class="speech-label">ASHISH_AI.speak()</strong>
-    <span id="speech-text">Namaste! I'm Ashish Kumar Prajapati, a Python Developer and AI/ML enthusiast from Lucknow, UP. I build real-world projects using Machine Learning, Computer Vision, and intelligent systems. Welcome to my portfolio!</span>
-  </div>
-
-  <!-- Speak Button -->
-  <button class="speak-btn" id="speak-btn" title="Listen to Introduction" onclick="speakIntro()">
-    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-  </button>
 
   <hr class="divider">
 
@@ -552,7 +495,7 @@
 
 <script src="script.js"></script>
 <script>
-// ── Added: typing role text ──
+// ── Typing role text ──
 (function initTyping(){
   const texts = ['Python Developer','AI/ML Enthusiast','App Developer','Computer Vision Builder'];
   let ti = 0, ci = 0, deleting = false;
@@ -571,58 +514,6 @@
   }
   tick();
 })();
-
-// ── Added: speak / voice intro feature ──
-let isSpeaking = false;
-
-function speakIntro(){
-  const intro = "Namaste! I am Ashish Kumar Prajapati. I am a Python Developer and AI/ML enthusiast from Lucknow, Uttar Pradesh. I am currently pursuing B.Tech in Computer Science with specialization in Artificial Intelligence and Machine Learning. I love building real-world projects using Machine Learning, Computer Vision, and intelligent systems. Some of my projects include AI Air Writing, ARC Chatbot, Invisible Cloth, and Emotion Detection. I am available for internships and collaborations. Feel free to explore my portfolio and get in touch!";
-
-  const popup = document.getElementById('speech-popup');
-  const btn = document.getElementById('speak-btn');
-  if(!('speechSynthesis' in window)) return;
-
-  if(isSpeaking){
-    window.speechSynthesis.cancel();
-    isSpeaking = false;
-    popup.classList.remove('visible');
-    btn.classList.remove('is-speaking');
-    return;
-  }
-
-  const utter = new SpeechSynthesisUtterance(intro);
-  utter.rate = 0.95;
-  utter.pitch = 1.05;
-  utter.volume = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.lang.includes('en') && v.name.includes('Google'))
-                  || voices.find(v => v.lang.includes('en-IN'))
-                  || voices.find(v => v.lang.includes('en'));
-  if(preferred) utter.voice = preferred;
-
-  utter.onstart = () => {
-    isSpeaking = true;
-    popup.classList.add('visible');
-    btn.classList.add('is-speaking');
-  };
-  utter.onend = utter.onerror = () => {
-    isSpeaking = false;
-    popup.classList.remove('visible');
-    btn.classList.remove('is-speaking');
-  };
-
-  window.speechSynthesis.speak(utter);
-}
-
-window.addEventListener('load', () => {
-  window.speechSynthesis.getVoices();
-  setTimeout(speakIntro, 1500);
-});
-
-if('speechSynthesis' in window){
-  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-}
 </script>
 </body>
 </html>

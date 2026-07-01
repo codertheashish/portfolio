@@ -73,3 +73,5 @@ Interactive celebration website with animations and effects.
 ---
 
 ⭐ If you like this portfolio, consider giving it a star.
+
+<img width="1536" height="1024" alt="Portfoilio" src="https://github.com/user-attachments/assets/a5627207-3149-43e8-b2c0-e6107dcdf089" />
